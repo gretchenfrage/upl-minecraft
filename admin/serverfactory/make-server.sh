@@ -9,7 +9,7 @@ echo "creating server in ${SERVER_DIR}"
 
 # download assets
 echo "==== DOWNLOADING MISSING ASSETS ===="
-./download-assets.sh
+(cd .. && ./download-assets.sh) || exit 1
 
 # unzip base server
 echo "==== UNZIPPING BASE SERVER ===="

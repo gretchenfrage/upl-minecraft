@@ -6,7 +6,7 @@ accounts.
 
 #### Instructions
 
-pwd1. Install OpenJDK-8 and OpenJDK-8-JRE. This is not the latest Java 
+1. Install OpenJDK-8 and OpenJDK-8-JRE. This is not the latest Java 
    version, but it's what modded minecraft needs to run.
 2. Download and install MultiMC ([link](https://multimc.org/#Download)).
    We'll use this as a modpack launcher. 
