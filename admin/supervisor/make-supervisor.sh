@@ -27,3 +27,25 @@ then
 fi
 
 cp -r "${MAKESERVER_TRGT}" "${VISOR_DIR}/mcserver" || exit 1
+
+
+## build the docker images
+sudo docker build -t javacontainer javacontainer || exit 1
+
+
+## create the run script
+RUNSCRIPT="${VISOR_DIR}/start_supervisor.sh"
+echo '#!/usr/bin/env bash' >> "${RUNSCRIPT}" || exit 1
+chmod +x "${RUNSCRIPT}" || exit 1
+
+# go to run script dir
+echo 'SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)' >> "${RUNSCRIPT}" || exit 1
+echo 'cd "${SCRIPT_DIR}"' >> "${RUNSCRIPT}" || exit 1
+
+# 1. run the mcserver entrypoint
+# 2. expose minecraft port (25565) to internet
+# 3. expose minecraft RCON port (25575) to localhost
+echo 'sudo docker run --env COMMAND="cd /mcserver && ./run.sh" -p 25566:25565/tcp -p 127.0.0.1:25575:25575/tcp --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" javacontainer' >> "${RUNSCRIPT}" || exit 1
+
+
+

@@ -69,7 +69,8 @@ The procedure implemented by the `make-server.sh` script is as follows:
 5. Agree to minecraft's EULA by creating a `eula.txt` file containing 
    `eula=true`.
 6. Copy over our pre-configured server settings (including disabling PVP,
-   increasing world load distance, and maybe some other stuff).
+   increasing world load distance, enabling RCON, enabling offline mode,
+   and maybe some other stuff).
 7. Copy over our `run.sh` entrypoint (which simply runs the patched 
    forge server jar with the appropriate java development kit).
 8. Copy over our altered version of FoamFix's configuration to resolve
