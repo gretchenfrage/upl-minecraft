@@ -33,7 +33,7 @@ password-based offline sessions for friends without MC accounts.
    world. Adjusting settings in a world triggers a regeneration of 
    the world's GPU resources, which can overwhelm your system and 
    freeze or even crash minecraft.
-2. In minecraft, go to `
+2. In minecraft, go to `Options > Controls` and set `Auto-Jump` to `Off`.
 
 #### Optional: GLSL Shaders
 
