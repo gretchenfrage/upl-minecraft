@@ -1,0 +1,10 @@
+[package]
+name = "downproxy"
+version = "0.1.0"
+authors = ["Phoenix Kahlo <kahlo.phoenix@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+regex = "^1.3.5"
+log = "^0.4.8"
+env_logger = "^0.7.1"
