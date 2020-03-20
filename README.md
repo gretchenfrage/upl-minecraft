@@ -15,8 +15,8 @@ accounts.
       doesn't prompt you, or you miss the prompt, go into 
       `MultiMC > Settings > Java > Auto Detect` and select Java 8.
     - Recommend that you configure it to allocate as much JVM memory
-      as you can. Modded MC requires massive amount of RAM. Try 10 or 
-      12GB or more if you have enough. If you missed the prompt,
+      as you can. Modded MC requires massive amount of RAM. Try 6GB or 
+      more if you have enough. If you missed the prompt,
       you can change it at 
       `MultiMC > Settings > Java > Minimum/Maximum memory allocation`.
 3. Download the modpack zip file in this repo, `Enigmatica2-1.62.zip`.
@@ -39,6 +39,9 @@ accounts.
    to 2 or blocks will look like crap from far away.
 4. In minecraft, go to `Options > Video Settings` and adjust `GUI Scale`
    to your preference.
+5. If your computer doesn't have powerful graphics, it can help to turn the 
+   video settings down in general, such as setting particles to minimal and 
+   graphics quality to lowest.
 
 #### Optional: GLSL Shaders
 
