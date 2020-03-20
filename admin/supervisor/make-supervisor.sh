@@ -45,7 +45,5 @@ echo 'cd "${SCRIPT_DIR}"' >> "${RUNSCRIPT}" || exit 1
 # 1. run the mcserver entrypoint
 # 2. expose minecraft port (25565) to internet
 # 3. expose minecraft RCON port (25575) to localhost
-echo 'sudo docker run --env COMMAND="cd /mcserver && ./run.sh" -p 25566:25565/tcp -p 127.0.0.1:25575:25575/tcp --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" javacontainer' >> "${RUNSCRIPT}" || exit 1
-
-
+echo 'sudo docker run --env COMMAND="cd /mcserver && ./run.sh" -p 25565:25565 -p 127.0.0.1:25575:25575 --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" -it javacontainer' >> "${RUNSCRIPT}" || exit 1
 
