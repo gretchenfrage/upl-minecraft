@@ -55,5 +55,5 @@ echo 'cd "${SCRIPT_DIR}"' >> "${BKUPSCRIPT}" || exit 1
 
 mkdir "${VISOR_DIR}/resticdb" || exit 1
 mkdir "${VISOR_DIR}/resticpass" || exit 1
-echo 'sudo docker run --mount "type=bind,src=${PWD}/resticdb,target=/resticdb" --mount "type=bind,src=${PWD}/resticpass,target=/resticpass" -it backupjob' >> "${BKUPSCRIPT}" || exit 1
+echo 'sudo docker run --network host --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" --mount "type=bind,src=${PWD}/resticdb,target=/resticdb" --mount "type=bind,src=${PWD}/resticpass,target=/resticpass" -it backupjob' >> "${BKUPSCRIPT}" || exit 1
 

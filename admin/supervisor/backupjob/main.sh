@@ -15,7 +15,7 @@ then
         (
         hexdump -n 16 -e '4/4 "%08X" 1 "\n"' /dev/random
         hexdump -n 16 -e '4/4 "%08X" 1 "\n"' /dev/random
-        ) > "${RESTIC_PASS}"
+        ) | tr -d '\n' > "${RESTIC_PASS}"
     fi
 
     # init database
@@ -33,19 +33,31 @@ fi
 # backup every 20 minutes
 # seconds = 20 * 60
 
-let "SECONDS = 20 * 60"
+if [ -z "${BACKUP_PERIOD}" ]
+then
+    let "SECONDS = 20 * 60"
+else
+    SECONDS="${BACKUP_PERIOD}"
+fi
 echo "making a backup every ${SECONDS} seconds"
-
-SECONDS=5
 
 # make periodic backups
 while true
 do    
-    echo "==== MAKING A BACKUP ====";
+    echo "==== MAKING A BACKUP ===="
     (
+        ./mcrcon -p password 'say now creating server backup.' || exit 1;
         ./mcrcon -p password 'save-off' || exit 1;
-        echo "backing upar  !";
+
+        echo "backing up server";
+        restic -r "${RESTIC_DB}" --password-file "${RESTIC_PASS}" backup --exclude /mcserver/logs /mcserver || exit 1;
+
         ./mcrcon -p password 'save-on' || exit 1;
-    ) || ./mcrcon -p password 'save-on';
+        ./mcrcon -p password 'say server backup complete.' || exit 1;
+
+    ) || (
+        ./mcrcon -p password 'say [WARN] server backup error.';
+        ./mcrcon -p password 'save-on';
+    )
     sleep "${SECONDS}"
 done

@@ -30,4 +30,4 @@ echo 'SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)' >> "${BKUPSCRIPT}" 
 echo 'cd "${SCRIPT_DIR}"' >> "${BKUPSCRIPT}" || exit 1
 
 # run the container
-echo 'sudo docker run --network host --mount "type=bind,src=${PWD}/resticdb,target=/resticdb" --mount "type=bind,src=${PWD}/resticpass,target=/resticpass" -it backupjob' >> "${BKUPSCRIPT}" || exit 1
+echo 'sudo docker run --network host --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" --mount "type=bind,src=${PWD}/resticdb,target=/resticdb" --mount "type=bind,src=${PWD}/resticpass,target=/resticpass" -it backupjob' >> "${BKUPSCRIPT}" || exit 1
