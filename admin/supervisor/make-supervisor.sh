@@ -5,7 +5,7 @@ SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 ## make directory
 if [ -z "${1}" ]
 then
-    VISOR_DIR=target
+    VISOR_DIR="${SCRIPT_DIR}/target"
 else
     VISOR_DIR="${1}"
 fi
@@ -27,8 +27,8 @@ fi
 cp -r "${MAKESERVER_TRGT}" "${VISOR_DIR}/mcserver" || exit 1
 
 ## build the docker images
-sudo docker build -t javacontainer javacontainer || exit 1
-sudo docker build -t backupjob backupjob || exit 1
+sudo docker build -t javacontainer "${SCRIPT_DIR}/javacontainer" || exit 1
+sudo docker build -t backupjob "${SCRIPT_DIR}/backupjob" || exit 1
 
 ## create the run script
 RUNSCRIPT="${VISOR_DIR}/start_supervisor.sh"
@@ -56,3 +56,4 @@ echo 'cd "${SCRIPT_DIR}"' >> "${BKUPSCRIPT}" || exit 1
 mkdir "${VISOR_DIR}/resticdb" || exit 1
 mkdir "${VISOR_DIR}/resticpass" || exit 1
 echo 'sudo docker run --mount "type=bind,src=${PWD}/resticdb,target=/resticdb" --mount "type=bind,src=${PWD}/resticpass,target=/resticpass" -it backupjob' >> "${BKUPSCRIPT}" || exit 1
+

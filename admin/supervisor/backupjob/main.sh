@@ -5,7 +5,7 @@ RESTIC_DB=/resticdb
 RESTIC_PASS=/resticpass/password
 
 # create the DB if it's never been created before
-if ! restic stats -r "${RESTIC_DB}" > /dev/null
+if ! ([ -f "${RESTIC_PASS}" ] && restic stats --password-file "${RESTIC_PASS}" -r "${RESTIC_DB}" > /dev/null)
 then
     echo "INFO: creating new restic database for backups"
     
@@ -36,14 +36,16 @@ fi
 let "SECONDS = 20 * 60"
 echo "making a backup every ${SECONDS} seconds"
 
+SECONDS=5
+
 # make periodic backups
 while true
 do    
     echo "==== MAKING A BACKUP ====";
     (
-        ./mcrcon -p password save off || exit 1;
+        ./mcrcon -p password 'save-off' || exit 1;
         echo "backing upar  !";
-        ./mcrcon -p password save on || exit 1;
-    ) || ./mcrcon -p password save on;
+        ./mcrcon -p password 'save-on' || exit 1;
+    ) || ./mcrcon -p password 'save-on';
     sleep "${SECONDS}"
 done
