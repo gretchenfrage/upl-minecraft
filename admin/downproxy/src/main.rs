@@ -18,7 +18,7 @@ use std::{
     env,
 };
 use gcs::{GcsAccess, GcsClient};
-use tokio::prelude::*;
+use server::PortPair;
 
 macro_rules! argv_branch {
     ($argv:expr, {
@@ -101,6 +101,20 @@ async fn upload_host_address(_args: Vec<String>) {
     info!("success!");
 }
 
+async fn run_server(args: Vec<String>) {
+    if args.len() == 0 {
+        error!("no ports given");
+        exit(1);
+    }
+
+    let ports = args.iter()
+        .map(|s| s.parse::<PortPair>())
+        .collect::<Result<Vec<PortPair>, _>>()
+        .unwrap_or_else(|()| exit(1));
+    server::run(ports).await
+        .unwrap_or_else(|()| exit(1));
+}
+
 #[tokio::main]
 async fn main() {
     env_logger::init();
@@ -109,7 +123,8 @@ async fn main() {
         local_client_address,
         test_token,
         upload_host_address,
-        download_host_address
+        download_host_address,
+        run_server,
     }) {
         println!("EPIC fail");
         exit(1);
