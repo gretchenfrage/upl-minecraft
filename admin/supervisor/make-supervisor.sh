@@ -57,3 +57,28 @@ mkdir "${VISOR_DIR}/resticdb" || exit 1
 mkdir "${VISOR_DIR}/resticpass" || exit 1
 echo 'sudo docker run --network host --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" --mount "type=bind,src=${PWD}/resticdb,target=/resticdb" --mount "type=bind,src=${PWD}/resticpass,target=/resticpass" -it backupjob' >> "${BKUPSCRIPT}" || exit 1
 
+
+
+# build the downproxy binary
+$SCRIPT_DIR/make-downproxy-binary.sh || exit 1
+
+# copy it into the supervisor target
+cp "${SCRIPT_DIR}/downproxy" "${VISOR_DIR}/downproxy" || exit 1
+
+# create the script to maintain the host address object
+MHAOSCRIPT="${VISOR_DIR}/maintain_host_address_object.sh"
+echo '#!/usr/bin/env bash' >> "${MHAOSCRIPT}" || exit 1
+chmod +x "${MHAOSCRIPT}" || exit 1
+
+## set the log level
+echo 'export RUST_LOG=info,downproxy=trace' >> "${MHAOSCRIPT}" || exit 1
+
+## set the path to the secret (this is hard-coded for phoenix's computer)
+echo 'export TOKEN_PATH=/home/phoenix/secret/mcupl-host-address-editor-service-account' >> "${MHAOSCRIPT}" || exit 1
+
+## go to script dir
+echo 'SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)' >> "${MHAOSCRIPT}" || exit 1
+echo 'cd "${SCRIPT_DIR}" || exit 1' >> "${MHAOSCRIPT}" || exit 1
+
+## run the downproxy in maintain_host_address_object mode
+echo './downproxy maintain_host_address_object || exit 1' >> "${MHAOSCRIPT}" || exit 1
