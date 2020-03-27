@@ -5,3 +5,4 @@ cd "${SCRIPT_DIR}"
 
 rm -rf serverfactory/target
 rm -rf supervisor/target
+rm proxyserver/downproxy

@@ -60,10 +60,10 @@ echo 'sudo docker run --network host --mount "type=bind,src=${PWD}/mcserver,targ
 
 
 # build the downproxy binary
-$SCRIPT_DIR/make-downproxy-binary.sh || exit 1
+$SCRIPT_DIR/../make-downproxy-binary.sh || exit 1
 
 # copy it into the supervisor target
-cp "${SCRIPT_DIR}/downproxy" "${VISOR_DIR}/downproxy" || exit 1
+cp "${SCRIPT_DIR}/../downproxy/bin" "${VISOR_DIR}/downproxy" || exit 1
 
 # create the script to maintain the host address object
 MHAOSCRIPT="${VISOR_DIR}/maintain_host_address_object.sh"
