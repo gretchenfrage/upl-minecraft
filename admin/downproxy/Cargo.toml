@@ -13,3 +13,4 @@ tokio = { version = "^0.2", features = ["full"] }
 yup-oauth2 = "^4.1.0"
 hyper = "^0.13.4"
 hyper-tls = "^0.4.1"
+num_cpus = "1.12.0"

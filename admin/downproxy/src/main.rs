@@ -8,6 +8,7 @@ extern crate tokio;
 extern crate hyper;
 extern crate hyper_tls;
 extern crate reqwest;
+extern crate num_cpus;
 
 pub mod client;
 pub mod gcs;
@@ -239,23 +240,34 @@ fn write_own_pid() {
     }
 }
 
-#[tokio::main]
-async fn main() {
+
+fn main() {
     env_logger::init();
 
-    write_own_pid();
+    use tokio::runtime::Builder;
+    let mut runtime = Builder::new()
+        .threaded_scheduler()
+        .enable_all()
+        .core_threads(num_cpus::get().max(4))
+        .thread_name("my-custom-name")
+        .thread_stack_size(3 * 1024 * 1024)
+        .build()
+        .unwrap();
+    runtime.block_on(async move {
+        write_own_pid();
 
-    if !argv_branch!(env::args().skip(1), {
-        local_client_address,
-        test_token,
-        upload_host_address,
-        download_host_address,
-        run_server,
-        maintain_host_address_object,
-        help,
-    }) {
-        error!("invalid usage");
-        println!("{}", MAN);
-        exit(1);
-    }
+        if !argv_branch!(env::args().skip(1), {
+            local_client_address,
+            test_token,
+            upload_host_address,
+            download_host_address,
+            run_server,
+            maintain_host_address_object,
+            help,
+        }) {
+            error!("invalid usage");
+            println!("{}", MAN);
+            exit(1);
+        }
+    });
 }
