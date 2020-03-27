@@ -74,11 +74,11 @@ chmod +x "${MHAOSCRIPT}" || exit 1
 echo 'export RUST_LOG=info,downproxy=trace' >> "${MHAOSCRIPT}" || exit 1
 
 ## set the path to the secret (this is hard-coded for phoenix's computer)
-echo 'export TOKEN_PATH=/home/phoenix/secret/mcupl-host-address-editor-service-account' >> "${MHAOSCRIPT}" || exit 1
+echo 'export TOKEN_PATH=/home/phoenix/secret/mcupl-host-address-editor-service-account/minecraftserver-271604-84eaae3bc93b.json' >> "${MHAOSCRIPT}" || exit 1
 
 ## go to script dir
 echo 'SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)' >> "${MHAOSCRIPT}" || exit 1
 echo 'cd "${SCRIPT_DIR}" || exit 1' >> "${MHAOSCRIPT}" || exit 1
 
 ## run the downproxy in maintain_host_address_object mode
-echo './downproxy maintain_host_address_object || exit 1' >> "${MHAOSCRIPT}" || exit 1
+echo './downproxy maintain_host_address_object || (echo "ERROR: maintain_host_address_object script failed"; exit 1)' >> "${MHAOSCRIPT}" || exit 1

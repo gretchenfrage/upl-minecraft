@@ -16,9 +16,11 @@ pub mod server;
 use std::{
     process::exit,
     env,
+    time::Duration,
 };
 use gcs::{GcsAccess, GcsClient};
 use server::PortPair;
+use tokio::time::delay_for;
 
 macro_rules! argv_branch {
     ($argv:expr, {
@@ -100,6 +102,8 @@ async fn upload_host_address(_args: Vec<String>) {
 }
 
 async fn maintain_host_address_object(_args: Vec<String>) -> ! {
+    let wait_period = Duration::from_secs(4);
+
     info!("looking for token path in env var {}", TOKEN_PATH_VAR);
     let auth = GcsAccess::new_from_env_path(TOKEN_PATH_VAR).await
         .unwrap_or_else(|()| exit(1));
@@ -129,6 +133,8 @@ async fn maintain_host_address_object(_args: Vec<String>) -> ! {
                 curr_online = Some(curr);
             }
         }
+
+        delay_for(wait_period).await;
     }
 }
 
