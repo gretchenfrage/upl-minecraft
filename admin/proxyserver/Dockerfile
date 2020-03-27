@@ -2,9 +2,7 @@ FROM archlinux/base
 
 COPY ./downproxy /downproxy
 
-ENV RUST_LOG==trace
-
-RUN pacman -Syu --noconfirm openssl
+ENV RUST_LOG=info,downproxy=trace
 
 EXPOSE 25565:25565
 
