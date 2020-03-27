@@ -42,7 +42,7 @@ echo 'cd "${SCRIPT_DIR}"' >> "${RUNSCRIPT}" || exit 1
 # 1. run the mcserver entrypoint
 # 2. expose minecraft port (25565) to internet
 # 3. expose minecraft RCON port (25575) to localhost
-echo 'sudo docker run --env COMMAND="cd /mcserver && ./run.sh" -p 25565:25565 -p 127.0.0.1:25575:25575 --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" -it javacontainer' >> "${RUNSCRIPT}" || exit 1
+echo 'sudo docker run --env COMMAND="cd /mcserver && ./run.sh" -p 25565:25565 -p 127.0.0.1:25575:25575 --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" --rm -d --name upl-minecraft-server javacontainer' >> "${RUNSCRIPT}" || exit 1
 
 ## create the backupjob script
 BKUPSCRIPT="${VISOR_DIR}/start_backupper.sh"
@@ -55,7 +55,7 @@ echo 'cd "${SCRIPT_DIR}"' >> "${BKUPSCRIPT}" || exit 1
 
 mkdir "${VISOR_DIR}/resticdb" || exit 1
 mkdir "${VISOR_DIR}/resticpass" || exit 1
-echo 'sudo docker run --network host --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" --mount "type=bind,src=${PWD}/resticdb,target=/resticdb" --mount "type=bind,src=${PWD}/resticpass,target=/resticpass" -it backupjob' >> "${BKUPSCRIPT}" || exit 1
+echo 'sudo docker run --network host --mount "type=bind,src=${PWD}/mcserver,target=/mcserver" --mount "type=bind,src=${PWD}/resticdb,target=/resticdb" --mount "type=bind,src=${PWD}/resticpass,target=/resticpass" --rm -d --name upl-minecraft-backup backupjob' >> "${BKUPSCRIPT}" || exit 1
 
 
 
@@ -80,5 +80,16 @@ echo 'export TOKEN_PATH=/home/phoenix/secret/mcupl-host-address-editor-service-a
 echo 'SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)' >> "${MHAOSCRIPT}" || exit 1
 echo 'cd "${SCRIPT_DIR}" || exit 1' >> "${MHAOSCRIPT}" || exit 1
 
+## tell the mhao process to write its own PID
+echo 'export WRITE_OWN_PID_TO=./mhao_pid' >> "${MHAOSCRIPT}" || exit 1
+
 ## run the downproxy in maintain_host_address_object mode
 echo './downproxy maintain_host_address_object || (echo "ERROR: maintain_host_address_object script failed"; exit 1)' >> "${MHAOSCRIPT}" || exit 1
+
+
+# copy in the boilerplate scripts
+for f in $(cd "${SCRIPT_DIR}/boilerplate-scripts" && ls)
+do
+    cp "${SCRIPT_DIR}/boilerplate-scripts/${f}" "${VISOR_DIR}/${f}" || exit 1
+    chmod +x "${VISOR_DIR}/${f}" || exit 1
+done

@@ -17,6 +17,8 @@ use std::{
     process::exit,
     env,
     time::Duration,
+    process,
+    fs,
 };
 use gcs::{GcsAccess, GcsClient};
 use server::PortPair;
@@ -170,6 +172,12 @@ ENVIRONMENT VARIABLES:
         Log-level in the de facto standard format
         established by env_logger.
 
+    WRITE_OWN_PID_TO
+
+        An optional path. Upon command startup, the process
+        will write its own process ID to a file at this
+        path.
+
 SUBCOMMANDS:
     help
 
@@ -219,9 +227,23 @@ async fn help(_args: Vec<String>) {
     println!("{}", MAN);
 }
 
+fn write_own_pid() {
+    if let Ok(path) = env::var("WRITE_OWN_PID_TO") {
+        info!("writing own PID to {:?}", path);
+        let pid = process::id();
+        info!("own pid = {}", pid);
+        
+        fs::write(path, pid.to_string())
+            .map_err(|e| error!("error writing own pid: {}", e))
+            .unwrap_or_else(|()| exit(1));
+    }
+}
+
 #[tokio::main]
 async fn main() {
     env_logger::init();
+
+    write_own_pid();
 
     if !argv_branch!(env::args().skip(1), {
         local_client_address,
