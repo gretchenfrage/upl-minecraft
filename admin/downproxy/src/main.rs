@@ -57,7 +57,7 @@ macro_rules! argv_branch {
 
 pub static TOKEN_PATH_VAR: &str = "TOKEN_PATH";
 pub static BUCKET: &str = "mcupl-var";
-pub static OBJECT: &str = "host-address";
+pub static OBJECT: &str = "host-address_2";
 
 async fn local_client_address(_args: Vec<String>) {
     let addr = client::address::local_client_address()

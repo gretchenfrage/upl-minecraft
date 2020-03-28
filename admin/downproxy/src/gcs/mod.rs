@@ -43,7 +43,8 @@ impl GcsClient {
 
         let request = Request::post(uri)
             .header("Authorization", auth_header)
-            .header("Content-Type", "application/octet-stream")
+            .header("Content-Type", "text/plain")
+            .header("Cache-Control", "no-cache,max-age=0")
             .body(data.into())
             .map_err(|e| 
                 error!("failure to build HTTP request: {}", e))?;

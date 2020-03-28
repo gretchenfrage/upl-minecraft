@@ -145,7 +145,7 @@ where
             external,
         } = port.into();
 
-        let addr = ("127.0.0.1", external);
+        let addr = ("0.0.0.0", external);
         let mut listener = TcpListener::bind(addr).await
             .map_err(|e| 
                 error!("failed to bind to port {}: {}", external, e))?;
