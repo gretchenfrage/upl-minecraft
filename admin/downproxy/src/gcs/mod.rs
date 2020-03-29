@@ -181,7 +181,7 @@ impl GcsClient {
         trace!("body before data = \n{}", body);
         let mut body = body.into_bytes();
         body.extend(data.into_bytes());
-        body.extend(format!("\r\n\r\n--{}--", boundary).into_bytes());
+        body.extend(format!("\r\n--{}--", boundary).into_bytes());
 
 
         let token = self.access.token().await?;
