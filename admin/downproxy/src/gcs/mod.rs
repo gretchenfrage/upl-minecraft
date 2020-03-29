@@ -14,7 +14,6 @@ use hyper::{
     },
 };
 use hyper_tls::HttpsConnector;
-//use mime_multipart as multipart;
 use serde::{Serialize, Deserialize};
 use serde_json;
 use headers::{self, Header, HeaderValue};
@@ -146,10 +145,10 @@ impl GcsClient {
         let mp_meta = MultipartMeta {
             cache_control: header_fmt(options.cache_control),
         };
-        debug!("mp_meta = {:#?}", mp_meta);
+        trace!("mp_meta = {:#?}", mp_meta);
         let mp_meta = serde_json::to_string(&mp_meta)
             .map_err(|e| error!("unexpected failure to JSON-serialize: {}", e))?;
-        debug!("mp_meta json = {}", mp_meta);
+        trace!("mp_meta json = {}", mp_meta);
 
         let boundary = "my-multipart-boundary";
 
@@ -179,7 +178,7 @@ impl GcsClient {
             ("Content-Transfer-Encoding: identity");
             ("");
         };
-        debug!("body before data = \n{}", body);
+        trace!("body before data = \n{}", body);
         let mut body = body.into_bytes();
         body.extend(data.into_bytes());
         body.extend(format!("\r\n\r\n--{}--", boundary).into_bytes());

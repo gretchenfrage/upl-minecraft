@@ -10,7 +10,6 @@ extern crate hyper_tls;
 extern crate reqwest;
 extern crate num_cpus;
 pub extern crate mime;
-//extern crate mime_multipart;
 extern crate headers;
 extern crate serde;
 extern crate serde_json;
