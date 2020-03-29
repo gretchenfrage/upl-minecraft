@@ -9,6 +9,11 @@ extern crate hyper;
 extern crate hyper_tls;
 extern crate reqwest;
 extern crate num_cpus;
+pub extern crate mime;
+//extern crate mime_multipart;
+extern crate headers;
+extern crate serde;
+extern crate serde_json;
 
 pub mod client;
 pub mod gcs;
@@ -21,7 +26,7 @@ use std::{
     process,
     fs,
 };
-use gcs::{GcsAccess, GcsClient};
+use gcs::*;
 use server::PortPair;
 use tokio::time::delay_for;
 
@@ -98,9 +103,13 @@ async fn upload_host_address(_args: Vec<String>) {
     info!("constructing gcs client");
 
     info!("posting object");
-    let body = addr.to_string().into_bytes();
-    gcs.set(BUCKET, OBJECT, body).await
-        .unwrap_or_else(|()| exit(1));
+    let body = addr.to_string();
+    gcs.insert(
+        BUCKET, 
+        OBJECT, 
+        body,
+        Default::default(),
+    ).await.unwrap_or_else(|()| exit(1));
     info!("success!");
 }
 
@@ -130,8 +139,13 @@ async fn maintain_host_address_object(_args: Vec<String>) -> ! {
             info!("host address changed from {:?} to {:?}", curr_online, curr);
             info!("updating gcs object");
 
-            let body = curr.to_string().into_bytes();
-            if gcs.set(BUCKET, OBJECT, body).await.is_ok() {
+            let body = curr.to_string();
+            if gcs.insert(
+                BUCKET, 
+                OBJECT, 
+                body,
+                Default::default(),
+            ).await.is_ok() {
                 info!("success!");
                 curr_online = Some(curr);
             }
