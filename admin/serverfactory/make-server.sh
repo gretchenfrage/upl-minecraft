@@ -39,3 +39,6 @@ cp ../foamfix.cfg config/
 
 # copy over our trixtalogin config which removes the timeout
 cp ../trixtalogin.conf config/trixtalogin.conf
+
+# copy over our server icon
+cp ../server-icon.png ./
