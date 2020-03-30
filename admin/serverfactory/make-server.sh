@@ -28,9 +28,14 @@ echo "eula=true" > eula.txt
 # copy over our server settings
 cp ../server.properties ./
 
+# copy over our plugins
+cp -r ../plugins ./mods/plugins
+
 # copy over our run script
 cp ../run.sh ./
 
 # sponge foam fix
 cp ../foamfix.cfg config/
 
+# copy over our trixtalogin config which removes the timeout
+cp ../trixtalogin.conf config/trixtalogin.conf

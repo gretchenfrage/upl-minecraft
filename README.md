@@ -27,6 +27,19 @@ accounts.
 5. Launch the game, by selecting the config, and clicking `Launch`. 
    This may take a very long time to load, especially on the first 
    time. 
+6. **Connect to our server at `uplmc.phoenixkahlo.com`**
+    - When you login, it will give you some warning about registries.
+      Just ignore that and click continue.
+    - Our server supports play without a minecraft account. That means
+      that when you join, you have to set a password for your username,
+      and re-enter it whenever you log in again.
+
+      Please use a throw-away password for this, I assume it isn't
+      secure.
+    - Use the `/nick` command to set your nickname to your real
+      name, like you would on the Discord :^)
+    - If you're playing in offline mode, you can use `/skin` to upload
+      a PNG skin to use.
 
 #### Recommendations
 

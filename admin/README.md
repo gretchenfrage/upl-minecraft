@@ -75,4 +75,10 @@ The procedure implemented by the `make-server.sh` script is as follows:
    forge server jar with the appropriate java development kit).
 8. Copy over our altered version of FoamFix's configuration to resolve
    a critical conflict with SpongeForge.
+9. Copy over our trixtalogin config (that's our offline-login plugin)
+   to give a really long login timeout duration.
+10. Copy over our serverside plugins.
 
+#### Server Supervisor
+
+We do a lot of stuff here which I "will" write up an explanation for later.
